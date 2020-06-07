@@ -9,41 +9,6 @@ import './components/css/custom.css';
 import 'bootstrap/dist/js/bootstrap.bundle';
 
 class App extends Component {
-  componentDidMount() {
-    var getLocalStorage = JSON.parse(localStorage.getItem('state'));
-    if (getLocalStorage != null) {
-      if (getLocalStorage.activeUser.length != 0) {
-        this.makeActiveUser(getLocalStorage.activeUser);
-      }
-    }
-    var activeChats = localStorage.getItem('activeChats');
-    if (activeChats != null) {
-      this.setState({
-        activeChats: activeChats.split(',')
-      })
-
-      if (localStorage.getItem('chats') == null) {
-        this.setState({
-          chats: []
-        })
-      } else {
-        this.setState({
-          chats: JSON.parse(localStorage.getItem('chats'))
-        })
-      }
-      console.log("chats " + localStorage.getItem('chats'))
-    }
-  }
-  componentDidUpdate() {
-    localStorage.setItem("state", JSON.stringify(this.state));
-    console.log(JSON.stringify(this.state))
-    if (this.state.chats.length != 0) {
-      localStorage.setItem("chats", JSON.stringify(this.state.chats));
-    }
-    if (this.state.activeChats.length != 0) {
-      localStorage.setItem("activeChats", this.state.activeChats);
-    }
-  }
   constructor(props) {
     super(props);
     this.state = {
@@ -76,7 +41,49 @@ class App extends Component {
     this.createNewUser = this.createNewUser.bind(this);
     this.createMessage = this.createMessage.bind(this);
     this.closeChat = this.closeChat.bind(this);
+
   }
+
+  componentDidMount() {
+    var getLocalStorage = JSON.parse(localStorage.getItem('state'));
+    if (getLocalStorage != null) {
+      if (getLocalStorage.activeUser.length != 0) {
+        this.makeActiveUser(getLocalStorage.activeUser);
+      }
+    }
+    var activeChats = localStorage.getItem('activeChats');
+    if (activeChats != null) {
+      this.setState({
+        activeChats: activeChats.split(',')
+      })
+      if (localStorage.getItem('chats') == null) {
+        this.setState({
+          chats: []
+        })
+      } else {
+        this.setState({
+          chats: JSON.parse(localStorage.getItem('chats'))
+        })
+      }
+    }
+  }
+
+  componentDidUpdate() {
+    localStorage.setItem("state", JSON.stringify(this.state));
+    if (this.state.chats.length != 0) {
+      localStorage.setItem("chats", JSON.stringify(this.state.chats));
+    }
+    if (this.state.activeChats.length != 0) {
+      localStorage.setItem("activeChats", this.state.activeChats);
+    }
+
+    this.state.activeChats.map(activeChat => {
+      var objDiv = document.querySelector('.chatbox-area[data-id="' + activeChat + '"] .card-content')
+      objDiv.scrollTop = objDiv.scrollHeight;
+    })
+  }
+
+
 
   makeActiveUser(activeUser) {
     var users = this.state.users;
@@ -91,11 +98,28 @@ class App extends Component {
   }
 
   envelopeClick(identifier) {
+    console.log(JSON.stringify(this.state))
     var identifierArray = this.state.activeChats;
     identifierArray.indexOf(identifier) > -1
       ? console.log("do nothing")
       : identifierArray.push(identifier)
     this.setState({ activeChats: identifierArray });
+    var userName = identifier;
+    this.state.chats.map((chatItem, fromUserIndex) => {
+      if (chatItem.fromUser == userName && userName != this.state.activeUser) {
+        chatItem.chats.map((toUserChat, toUserIndex) => {
+          if (toUserChat.toUser == this.state.activeUser) {
+            toUserChat.messages.map((eachMessage, messageIndex) => {
+              if (eachMessage.user == userName && eachMessage.seen == false) {
+                this.state.chats[fromUserIndex].chats[toUserIndex].messages[messageIndex].seen = true;
+                this.forceUpdate();
+                console.log("-------->" + JSON.stringify(this.state.chats[fromUserIndex].chats[toUserIndex].messages[messageIndex]));
+              }
+            })
+          }
+        });
+      }
+    })
   }
 
   closeChat(identifier) {
@@ -131,6 +155,7 @@ class App extends Component {
       }
     }
   }
+
   createNewUser(message, toUser) {
     var createNewUserObject = new Object();
     createNewUserObject.fromUser = this.state.activeUser;
@@ -150,6 +175,7 @@ class App extends Component {
     createMessageObject.user = this.state.activeUser;
     createMessageObject.message = message;
     createMessageObject.order = document.querySelectorAll('.chatBox[data-id="' + toUser + '"] .chat-message-group').length + 1;
+    createMessageObject.seen = false;
     return createMessageObject;
   }
 
@@ -164,10 +190,11 @@ class App extends Component {
     })
     document.querySelector('#dropDownDiv').classList.remove('show')
   }
+
   render() {
     return (
       <div className="App" >
-        <Header users={this.state.users} activeUserName={this.state.activeUserName} activeUserImage={this.state.activeUserImage} activeUser={this.state.activeUser} envelopeClick={this.envelopeClick} makeActiveUser={this.makeActiveUser}></Header>
+        <Header users={this.state.users} chats={this.state.chats} activeUserName={this.state.activeUserName} activeUserImage={this.state.activeUserImage} activeUser={this.state.activeUser} envelopeClick={this.envelopeClick} makeActiveUser={this.makeActiveUser}></Header>
         <Chats closeChat={this.closeChat} chats={this.state.chats} users={this.state.users} activeChats={this.state.activeChats} getMessage={this.getMessage} activeUser={this.state.activeUser}></Chats>
         <div className="row">
           <div className="col-4 offset-4 text-center mt-2">

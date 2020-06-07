@@ -134,6 +134,12 @@
   border-radius: 0.35rem 0.35rem 0 0;
 }
 
+.badgeSuperScript {
+  position: absolute;
+  margin-top: -6.5px;
+  right: 2.5px;
+  border-radius: 10px;
+}
 @media screen and (max-width: 767px) {
   .hidingChatbox .card-header-title,
   .hidingChatbox .card-header-icon {

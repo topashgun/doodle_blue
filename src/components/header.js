@@ -4,8 +4,33 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons'
 var userIndex = "NoActiveUser";
 class header extends Component {
+    constructor(props) {
+        super(props)
+        this.checkNewMessages = this.checkNewMessages.bind(this);
+    }
     toggleDiv() {
         document.getElementById('dropDownDiv').classList.toggle('show');
+    }
+    componentDidUpdate() {
+        this.checkNewMessages()
+    }
+    checkNewMessages(userIdentifier) {
+        var userName = userIdentifier
+        var userUnreadMessagesCount = 0
+        this.props.chats.map((chatItem, index) => {
+            if (chatItem.fromUser == userName && userName != this.props.activeUser) {
+                chatItem.chats.map(toUserChat => {
+                    if (toUserChat.toUser == this.props.activeUser) {
+                        toUserChat.messages.map(eachMessage => {
+                            if (eachMessage.user == userName && eachMessage.seen == false) {
+                                userUnreadMessagesCount++;
+                            }
+                        })
+                    }
+                });
+            }
+        })
+        return userUnreadMessagesCount;
     }
     render() {
         return (
@@ -34,7 +59,10 @@ class header extends Component {
                                                         <div className="sb-dropdown-item-icon"><img src={require('./img/' + user.image)}></img></div>
                                                         {user.name}
                                                     </span>
-                                                    <FontAwesomeIcon className={`mailIcon ${this.props.activeUser == "" ? `disabledIcon` : ``}`} icon={faEnvelope} onClick={() => this.props.envelopeClick(user.identifier)} />
+                                                    <span className="envelopeWithBridgeSpan">
+                                                        <FontAwesomeIcon className={`mailIcon ${this.props.activeUser == "" ? `disabledIcon` : ``}`} icon={faEnvelope} onClick={() => this.props.envelopeClick(user.identifier)} />
+                                                        {this.checkNewMessages(user.identifier) == 0 ? '' : <span className="badge badge-danger badgeSuperScript">{this.checkNewMessages(user.identifier)}</span>}
+                                                    </span>
                                                 </a>
                                             )
                                         }
