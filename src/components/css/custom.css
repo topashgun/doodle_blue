@@ -1,0 +1,157 @@
+.dropdown-menu .dropdown-item .sb-dropdown-item-icon img {
+  width: 100%;
+  vertical-align: baseline;
+}
+.dropdown-item {
+  cursor: pointer;
+}
+.bgWhite {
+  background: white;
+}
+.height0 {
+  height: 0px;
+}
+.sendButton {
+  cursor: pointer;
+}
+.card-header-title {
+  width: 100%;
+  text-align: left;
+  padding-left: 5px;
+}
+.chatBox .card-header,
+.writer-user .chat-messages .message {
+  background: #006ada;
+}
+.card-footer {
+  padding: 2px;
+  /* background-color: rgba(0, 106, 218, 0.03); */
+  border-top: 1px solid rgba(0, 106, 218, 0.5);
+}
+.dropdown-item {
+  padding: 0.25rem 0.5rem;
+}
+.chatBox {
+  margin: 0 5px;
+}
+.chatBox .card {
+  border-radius: 4px 4px 0 0;
+}
+.mailIcon {
+  margin-left: auto;
+  color: #0061f2;
+  padding: 0 1.75px;
+  border-radius: 10px;
+  font-size: 18px;
+}
+.mailIcon:hover {
+  box-shadow: 0 0 0 0.15rem rgba(34, 39, 46, 0.15) !important;
+}
+.chatWindowDiv {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+}
+.sb-dropdown-item-icon {
+  height: 1em;
+  width: 1em;
+  margin-right: 0.5rem;
+  color: #a7aeb8;
+}
+.disabledIcon {
+  cursor: no-drop;
+  pointer-events: none;
+  color: gray !important;
+}
+.colorWhite {
+  color: white;
+}
+.chatHeaderImage {
+  width: 35px;
+  height: auto;
+}
+.content {
+  display: flex;
+  flex-direction: column;
+}
+.shadow {
+  box-shadow: 0 0.15rem 1.75rem 0 rgba(34, 39, 46, 0.15) !important;
+}
+.sb-topnav {
+  padding-left: 0;
+  height: 3.625rem;
+  z-index: 1039;
+}
+
+.sb-topnav {
+  padding-left: 0;
+  height: 3.625rem;
+  z-index: 1039;
+}
+.sb-topnav .navbar-brand {
+  width: 10rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  margin: 0;
+}
+.sb-btn-icon {
+  padding: 0;
+  -webkit-box-pack: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 100%;
+  flex-shrink: 0;
+  height: calc((1rem * 1.5) + (0.375rem * 2) + (2px)) !important;
+  width: calc((1rem * 1.5) + (0.375rem * 2) + (2px)) !important;
+}
+.sb-btn-transparent-dark {
+  color: #fff;
+  background-color: transparent;
+  border-color: transparent;
+  color: rgba(34, 39, 46, 0.5) !important;
+}
+.card:not([class*="bg-"]) .card-header {
+  color: #0061f2;
+}
+.card .card-header {
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  font-weight: 600;
+  border-bottom: none;
+}
+.card-header {
+  padding: 1rem 0.5rem;
+  margin-bottom: 0;
+  background-color: rgba(0, 0, 0, 0.03);
+  border-bottom: 0 solid rgba(0, 0, 0, 0.125);
+}
+.card-header:first-child {
+  border-radius: 0.35rem 0.35rem 0 0;
+}
+
+@media screen and (max-width: 767px) {
+  .hidingChatbox .card-header-title,
+  .hidingChatbox .card-header-icon {
+    display: none;
+  }
+  .hidingChatbox.chatBox {
+    width: 45px;
+  }
+  .chatWindowDiv {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  .chatBox.mobileScreen {
+    position: absolute;
+  }
+  .chatBox.hidingChatbox.mobileScreen {
+    position: relative;
+    margin-bottom: 5px;
+  }
+}
